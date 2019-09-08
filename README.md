@@ -6,4 +6,5 @@ When more than 10% of the element is onscreen, cssClassToglerScroll adds the cla
 When 10% or less of the element is onscreen, the css class gets removed. The appearance of the elements once they are > 10% onscreen is
 up to your css class.
 
-  Please visit my codepen to see it in action!!!
+https://codepen.io/VladKvaskov/pen/YzKepBb
+Please visit my codepen to see it in action!!!
