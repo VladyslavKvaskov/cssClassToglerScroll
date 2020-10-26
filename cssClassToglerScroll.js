@@ -1,31 +1,33 @@
 class cssClassTogglerScroll{
-  constructor(element, cssClass){
-    let elementBounding;
-    let elementHeight;
-    let windowHeight;
-    windowHeight = window.innerHeight;
-    const target = element.parentNode === document.body ? window : element.parentNode;
-    let targetHeight = element.parentNode === document.body ? window.innerHeight : element.offsetHeight;
-    target.addEventListener('scroll', function(){
-      elementBounding = {
-        top:element.getBoundingClientRect().top,
-        bottom:element.getBoundingClientRect().bottom
-      };
+  constructor(data){
+    this.options = {
+      root: null,
+      rootMargin: "0px",
+      threshold: data.threshold
+    };
 
-      elementHeight = element.offsetHeight;
-      if(elementBounding.top < targetHeight - (elementHeight / 10) && elementBounding.bottom > elementHeight / 10){
-        element.classList.add(cssClass);
+    this.observer = new IntersectionObserver((entries, observer)=>{
+      entries.forEach((entry) => {
+      if(entry.isIntersecting){
+        if(data.cssClass){
+          entry.target.classList.add(data.cssClass);
+        }
+        if(data.onVisible){
+          data.onVisible();
+        }
       }
-      else
-        element.classList.remove(cssClass);
+      else{
+        if(data.cssClass){
+          entry.target.classList.remove(data.cssClass);
+        }
+        if(data.onHidden){
+          data.onHidden();
+        }
+      }
     });
 
-      elementBounding = {top:element.getBoundingClientRect().top, bottom:element.getBoundingClientRect().bottom};
-      elementHeight = element.offsetHeight;
-      if(elementBounding.top < targetHeight - (elementHeight / 10) && elementBounding.bottom > elementHeight / 10){
-        element.classList.add(cssClass);
-      }
-      else
-        element.classList.remove(cssClass);
+  }, this.options);
+    this.observer.observe(data.element);
+
   }
 }
